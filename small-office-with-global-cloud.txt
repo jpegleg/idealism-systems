@@ -1,0 +1,59 @@
+This file describes a small office and a heavily cloud service focused model.
+The office has firewalls, powerful workstations with local databases, and
+calls out to orchestrate load balancers and products in any clouds it manages.
+
+Product traffic goes straight into the cloud services and never goes near the local infra.
+Local infra runs analytics, configurations, orchestration, backups, monitoring, and master databases.
+
+This is for a sysadmin staff of one to four.
+
+| Ansible, ML, Kubernetes, Terraform, Monitoring, Utility workstation x2 (Ubuntu)
+| Workstation Computer (physical)
+| 64 GB RAM
+| 8+ core
+| 4+ TB disks
+\
+  |
+  |  VMs on each workstation
+  |
+  |  Scanner/Security (Kali)
+  |  Virtual machine
+  |  8 GB RAM
+  |  4 core
+  |  200 GB disk
+  |
+  |  Database that syncs to Database on the other workstation as cluster (Your pick on OS: CentOS, RHEL, OpenSUSE, or Debian)
+  |  Virtual machine
+  |  16 GB RAM
+  |  4 core
+  |  1 TB disk
+
+External Cloud Service:
+
+     |  External cloud service (CentOS/RHEL) - ( Product Firewall/Load Balancer )
+     |  External VM
+     |  8 GB RAM
+     |  2 core
+     |  16 GB disk
+      |
+     |  External cloud service (CentOS/RHEL) - ( Product Web Container )
+     |  External VM
+     |  2 GB RAM
+     |  1 core
+     |  20 GB disk
+      |
+     |  External cloud service (CentOS/RHEL) - ( Product Backend/DB Container )
+     |  External VM
+     |  8 GB RAM
+     |  2 core
+     |  30 GB disk
+     
+     
+Additional
+- UPS per workstation
+- x4 Raspberry Pi - temperature monitoring, humidity, gas detection, misc sensors
+- x2 large (43"+) screen monitors, KVM between all workstations in office
+- x2 levono laptops (any OS) 16GB+ RAM
+- x2 mechanical keyboards and quality mice, KVM between all workstations in office
+- printer
+- additional network hardware
