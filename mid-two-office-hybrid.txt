@@ -1,0 +1,269 @@
+The purpose of this document is to describe an office systems build out for hybrid cloud infrastructure.
+
+This office/datacenter model covers the basics needed for a hybrid cloud with strong security controls and enterprise compute power.
+
+There are two offices/datacenters in this model. Employee size for sysadmin teams between 3 and 12 people spread between the two locations.
+
+
+
+Office Datacenter A (primary)
+=====================
+
+
+Rack 1
+-------------------------------
+| Firewall/Gateway x2 redundant pair (FreeBSD) (kernel firewall and NTP)
+| Blade server (physical)
+| 8 GB RAM
+| 4 core
+| 80 GB disk
+ |   
+| Crypt (OpenBSD) x2 redundant pair - Used for key management and password database as well as security services.
+| Blade server (physical)
+| 16 GB RAM
+| 2+ cores
+| 4+ TB disks
+ |  
+| Hypervisor A x2 redundant pair (Your pick: VMWare, Xen, OpenStack, etc)
+| Blade server (physical)
+| 128 GB RAM
+| 4+ cores
+| 2.4+ GHz
+| Mounted to SAN
+ | 
+| SAN A 
+| 10+ TB  storage array
+|
+| UPS A
+| 
+| UPS B
+|
+|____________________________
+  |
+  |  Virtualized on Hypervisor A
+  |
+  |  Scanner/Security (Kali)
+  |  Virtual machine
+  |  16 GB RAM
+  |  4 core
+  |  800 GB disk
+  | 
+  |  Database 1 (CentOS/RHEL)
+  |  Virtual machine
+  |  24 GB RAM
+  |  4 core
+  |  2 TB disk
+   > sync to database 2
+  |  Database 2 (CentOS/RHEL)
+  |  Virtual machine
+  |  24 GB RAM
+  |  4 core
+  |  2 TB disk
+  |
+  |  Load Balancer/Application firewall x2 redudant pair (CentOS/RHEL)
+  |  Virtual machine
+  |  8 GB RAM
+  |  4 core
+  |  100 GB disk
+  \
+   \
+    \
+     \
+      |  Product Node 1 (CentOS/RHEL) - ( assume Kubernetes -> Docker/Cloud -> Product Container )
+      |  Virtual machine
+      |  8 GB RAM
+      |  4 core
+      |  200 GB disk
+      |
+      |  Product Node 2 (CentOS/RHEL) - ( assume Kubernetes -> Docker/Cloud -> Product Container )
+      |  Virtual machine
+      |  8 GB RAM
+      |  4 core
+      |  200 GB disk
+      |
+      |  Product Node 3 (CentOS/RHEL) - ( assume Kubernetes -> Docker/Cloud -> Product Container )
+      |  Virtual machine
+      |  8 GB RAM
+      |  4 core
+      |  200 GB disk
+       \
+        |  External cloud service (CentOS/RHEL) - ( External Docker/Cloud -> Product Container )
+        |  External VM
+        |  8 GB RAM
+        |  2 core
+        |  20 GB disk
+
+Rack 2
+-------------------------------
+UPS x2
+Routers
+Switches
+(additional ~1/4 rack space for whatever)
+
+
+Workstations:
+
+ML workstation A (Ubuntu)
+Physical machine
+64 GB RAM
+RTX 2080 Ti (11 GB VRAM)
+10+ core
+4+ TB disk
+
+Wazuh OSSEC + Ansible + OpenSCAP Workbench workstation A (CentOS)
+Physical machine
+16 GB RAM
+8 core
+250 GB disk
+
+Monitoring workstation A (Ubuntu/Debian)
+Physical machine
+16 GB RAM
+8 core
+2 TB disk
+
+Research worksation A (Any OS)
+Physical machine
+16 GB RAM
+8 core
+1 TB disk
+
+Additional A1:
+- AC unit/cooling system for same room as Rack 1
+- Office UPS per workstation
+- x8 Raspberry Pi per Office IoT - temperature monitoring, humidity, gas detection, misc sensors
+- x4 large (43"+) screen monitors, KVM between all workstations in office
+- x4 levono laptops (any OS) 16GB+ RAM
+- x4 mechanical keyboards and quality mice, KVM between all workstations in office
+- printer
+- additional network hardware
+
+
+Office Datacenter B (secondary)
+=====================
+
+
+Rack 3
+-------------------------------
+| Firewall/Gateway x2 redundant pair (FreeBSD) (kernel firewall and NTP)
+| Blade server (physical)
+| 8 GB RAM
+| 4 core
+| 80 GB disk
+ | 
+| Crypt (OpenBSD) x2 redundant pair - Used for key management and password database as well as security services.
+| Blade server (physical)
+| 16 GB RAM
+| 2+ cores
+| 4+ TB disks
+ | 
+| Hypervisor B x2 redundant pair (Your pick: VMWare, Xen, OpenStack, etc)
+| Blade server (physical)
+| 128 GB RAM
+| 4+ cores
+| 2.4+ GHz
+| Mounted to SAN
+ | 
+| SAN B 
+| 10+ TB  storage array
+|
+| UPS C
+| 
+| UPS D
+|
+|____________________________
+  |
+  |  Virtualized on Hypervisor B
+  |
+  |  Scanner/Security (Kali)
+  |  Virtual machine
+  |  16 GB RAM
+  |  4 core
+  |  800 GB disk
+  | 
+  |  Database 3 (CentOS/RHEL) ( sync from Database 1 )
+  |  Virtual machine
+  |  24 GB RAM
+  |  4 core
+  |  2 TB disk
+   > sync to database 3
+  |  Database 4 (CentOS/RHEL)
+  |  Virtual machine
+  |  24 GB RAM
+  |  4 core
+  |  2 TB disk
+  |
+  |  Load Balancer/Application firewall x2 redudant pair (CentOS/RHEL)
+  |  Virtual machine
+  |  8 GB RAM
+  |  4 core
+  |  100 GB disk
+  \
+   \
+    \
+     \
+      |  Product Node 5 CentOS/RHEL) - ( assume Kubernetes -> Docker/Cloud -> Product Container )
+      |  Virtual machine
+      |  8 GB RAM
+      |  4 core
+      |  200 GB disk
+      |
+      |  Product Node 6 CentOS/RHEL) - ( assume Kubernetes -> Docker/Cloud -> Product Container )
+      |  Virtual machine
+      |  8 GB RAM
+      |  4 core
+      |  200 GB disk
+      |
+      |  Product Node 7 (CentOS/RHEL) - ( assume Kubernetes -> Docker/Cloud -> Product Container )
+      |  Virtual machine
+      |  8 GB RAM
+      |  4 core
+      |  200 GB disk
+      |
+       \
+        |  External cloud service (CentOS/RHEL) - ( External Docker/Cloud -> Product Container )
+        |  External VM
+        |  8 GB RAM
+        |  2 core
+        |  20 GB disk
+
+
+Rack 4
+-------------------------------
+UPS x2
+Routers
+Switches
+(additional ~1/4 rack space for whatever)
+
+
+Workstations:
+
+ML workstation B (Ubuntu)
+Physical machine
+64 GB RAM
+RTX 2080 Ti (11 GB VRAM)
+10+ core
+4+ TB disk 
+
+Wazuh OSSEC + Ansible + OpenSCAP Workbench workstation B (CentOS)
+Physical machine
+16 GB RAM
+8 core
+250 GB disk
+
+Monitoring workstation B (Ubuntu/Debian)
+Physical machine
+16 GB RAM
+8 core
+2 TB disk
+
+Additional for Office B:
+- AC unit/cooling system for same room as Rack 2
+- Office UPS per workstation
+- x8 Raspberry Pi per Office IoT - temperature monitoring, humidity, gas detection, misc sensors
+- x3 large (43"+) screen monitors, KVM between all workstations in office
+- x2 levono laptops (any OS) 16GB+ RAM
+- x4 mechanical keyboards and quality mice, KVM between all workstations in office
+- printer
+- additional network hardware
+
