@@ -1,0 +1,866 @@
+The purpose of this document is to describe a private cloud infrastructure at scale.
+
+There are six datacenters in this model. Employee size for sysadmin teams between 13 and 200 people spread between the locations.
+
+The GTM/DNS servers are synced together across all datacenters.
+The SANs have data sync and backup jobs across all datacenters.
+The Distributed Database nodes are linked together across all datacenters.
+
+
+Datacenter 1
+(positioned near main office, highest ratio of employees)
+code name master
+=====================
+
+1 rack of:
+-------------------
+GTM/DNS server
+8 GB RAM
+4 core
+80 GB disk
+
+Datacenter Workstation + fold out screen
+CentOS
+8 GB RAM
+8 core
+keyboard and mouse roll out
+
+UPS x2
+
+2 racks of:
+-------------------
+| Firewall/Gateway x2 redundant pair (FreeBSD) (kernel firewall and NTP)
+| Blade server (physical)
+| 8 GB RAM
+| 4 core
+| 80 GB disk
+ |  
+| Hypervisor x2 redundant pair (Your pick: VMWare, Xen, OpenStack, etc)
+| Blade server (physical)
+| 256 GB RAM
+| 18+ cores
+| Mounted to SAN
+
+
+2 racks of:
+-------------------
+| SAN A 
+| 80+ TB  storage array
+|
+| UPS A
+| 
+| UPS B
+|
+| UPS C
+| 
+| UPS D
+|____________________________
+
+
+1 rack of:
+-------------------  
+| Crypt (OpenBSD) x2 redundant pair - Used for key management and password database as well as security services.
+| Blade server (physical)
+| 16 GB RAM
+| 2+ cores
+| 4+ TB disks
+|
+| IDS/OSSEC (CentOS) x2 redundant pair - Intrusion detection, centralized logging, and security alerting.
+| Blade server (physical)
+| 16 GB RAM
+| 8+ cores
+| 4+ TB disks
+|
+| UPS x2
+
+
+
+1 rack of:
+-------------------  
+ML workstation A (Ubuntu)
+Physical machine
+256 GB Memory
+RTX 8000 (48 GB VRAM)
+Intel W-2195 CPU (18 Cores)
+4+ TB disk 
+
+Monitoring server (Ubuntu)
+Physical machine
+32 GB Memory
+8+ cores
+10 TB disk
+  |
+  |  Scanner/Security hosted on Monitoring server (Kali)
+  |  Virtual machine
+  |  16 GB RAM
+  |  4 core
+  |  800 GB disk
+  
+UPS x2
+  
+  
+Virtualized on the Hypervisors:
+
+  | 
+  |  Distributed Database Node (CentOS/RHEL/Ubuntu/Debian/OpenSUSE)
+  |  Virtual machine
+  |  24 GB RAM
+  |  4 core
+  |  2 TB disk
+  |
+  |  Load Balancer/Application firewall x2 redudant pair (CentOS/RHEL/F5)
+  |  Virtual machine
+  |  16 GB RAM
+  |  4 core
+  |  100 GB disk
+  \
+   \
+    \
+     \
+      |  Product Web Node 1 (CentOS/RHEL/Ubuntu/Debian/OpenSUSE) 
+      |  Virtual machine
+      |  16 GB RAM
+      |  4 core
+      |  200 GB disk
+      |
+      |  Product Web Node 2 (CentOS/RHEL/Ubuntu/Debian/OpenSUSE) 
+      |  Virtual machine
+      |  16 GB RAM
+      |  4 core
+      |  200 GB disk
+      |
+      |  Product Web Node 3 (CentOS/RHEL/Ubuntu/Debian/OpenSUSE)
+      |  Virtual machine
+      |  16 GB RAM
+      |  4 core
+      |  200 GB disk
+      |
+      |  Product Web Node 4 (CentOS/RHEL/Ubuntu/Debian/OpenSUSE)
+      |  Virtual machine
+      |  16 GB RAM
+      |  4 core
+      |  200 GB disk
+      |
+      |  Product Web  Node 5 (CentOS/RHEL/Ubuntu/Debian/OpenSUSE)
+      |  Virtual machine
+      |  16 GB RAM
+      |  4 core
+      |  200 GB disk
+      \
+       \
+        |  Product Backend/Compute/DB Node 1 (CentOS/RHEL/Ubuntu/Debian/OpenSUSE)
+        |  Virtual machine
+        |  16 GB RAM
+        |  4 core
+        |  200 GB disk
+        |
+        |  Product Backend/Compute/DB Node 2 (CentOS/RHEL/Ubuntu/Debian/OpenSUSE)
+        |  Virtual machine
+        |  16 GB RAM
+        |  4 core
+        |  200 GB disk
+        |
+        |  Product Backend/Compute/DB Node 3 (CentOS/RHEL/Ubuntu/Debian/OpenSUSE)
+        |  Virtual machine
+        |  16 GB RAM
+        |  4 core
+        |  200 GB disk
+        |
+        |  Product Backend/Compute/DB Node 4 (CentOS/RHEL/Ubuntu/Debian/OpenSUSE) 
+        |  Virtual machine
+        |  16 GB RAM
+        |  4 core
+        |  200 GB disk
+
+
+
+
+
+Additional rack
+-------------------------------
+UPS x2
+Routers
+Switches
+
+
+
+Workstations:
+
+
+Command station/NOC x4
+Ansible + Firefox (CentOS)
+Physical machine
+16 GB RAM
+8 core
+1 TB disk
+
+Research station x10
+Any OS and software
+Physical machine
+16 GB RAM
+8 core
+2 TB disk
+
+Standard station x20
+Any OS and software
+Physical machine
+8 GB RAM
+8 core
+2 TB disk
+
+Microsoft station x2
+Windows 10 Pro
+Physical machine
+32 GB RAM
+8 core
+10 TB disk
+
+
+Additional:
+- AC unit/cooling systems
+- Office UPS per workstation
+- x20 Raspberry Pi per Office IoT - temperature monitoring, humidity, gas detection, misc sensors
+- x8 large (43"+) screen monitors, KVM between all Command Station workstations in NOC
+- x20+ levono laptops (any OS) 16GB+ RAM
+- printer x2
+- individual monitors, mechanical keyboards, and quality mice for each workstation
+- additional network hardware
+
+
+
+
+Datacenter 2 (code name overflow)
+positioned for completely alternative networks from main office and Datacenter 1
+=====================
+
+1 rack of:
+-------------------
+GTM/DNS server
+8 GB RAM
+4 core
+80 GB disk
+
+Datacenter Workstation + fold out screen
+CentOS
+8 GB RAM
+8 core
+keyboard and mouse roll out
+
+UPS x2
+
+
+
+3 racks of:
+-------------------
+| Firewall/Gateway x2 redundant pair (FreeBSD) (kernel firewall and NTP)
+| Blade server (physical)
+| 8 GB RAM
+| 4 core
+| 80 GB disk
+ |  
+| Hypervisor x2 redundant pair (Your pick: VMWare, Xen, OpenStack, etc)
+| Blade server (physical)
+| 256 GB RAM
+| 18+ cores
+| Mounted to SAN
+
+
+2 racks of:
+-------------------
+| SAN A 
+| 80+ TB  storage array
+|
+| UPS A
+| 
+| UPS B
+|
+| UPS C
+| 
+| UPS D
+|____________________________
+
+
+1 rack of:
+-------------------  
+| Crypt (OpenBSD) x2 redundant pair - Used for key management and password database as well as security services.
+| Blade server (physical)
+| 16 GB RAM
+| 2+ cores
+| 4+ TB disks
+|
+| IDS/OSSEC (CentOS) x2 redundant pair - Intrusion detection, centralized logging, and security alerting.
+| Blade server (physical)
+| 16 GB RAM
+| 8+ cores
+| 4+ TB disks
+|
+| UPS x2
+
+
+  
+  
+Virtualized on the Hypervisors:
+
+  | 
+  |  Distributed Database Node (CentOS/RHEL/Ubuntu/Debian/OpenSUSE)
+  |  Virtual machine
+  |  24 GB RAM
+  |  4 core
+  |  2 TB disk
+  |
+  |  Load Balancer/Application firewall x2 redudant pair (CentOS/RHEL/F5)
+  |  Virtual machine
+  |  16 GB RAM
+  |  4 core
+  |  100 GB disk
+  \
+   \
+    \
+     \
+      |  Product Web Node 1 (CentOS/RHEL/Ubuntu/Debian/OpenSUSE) 
+      |  Virtual machine
+      |  16 GB RAM
+      |  4 core
+      |  200 GB disk
+      |
+      |  Product Web Node 2 (CentOS/RHEL/Ubuntu/Debian/OpenSUSE) 
+      |  Virtual machine
+      |  16 GB RAM
+      |  4 core
+      |  200 GB disk
+      |
+      |  Product Web Node 3 (CentOS/RHEL/Ubuntu/Debian/OpenSUSE)
+      |  Virtual machine
+      |  16 GB RAM
+      |  4 core
+      |  200 GB disk
+      |
+      |  Product Web Node 4 (CentOS/RHEL/Ubuntu/Debian/OpenSUSE)
+      |  Virtual machine
+      |  16 GB RAM
+      |  4 core
+      |  200 GB disk
+      |
+      |  Product Web  Node 5 (CentOS/RHEL/Ubuntu/Debian/OpenSUSE)
+      |  Virtual machine
+      |  16 GB RAM
+      |  4 core
+      |  200 GB disk
+      |
+      |  Product Web Node 6 (CentOS/RHEL/Ubuntu/Debian/OpenSUSE)
+      |  Virtual machine
+      |  16 GB RAM
+      |  4 core
+      |  200 GB disk
+      |
+      |  Product Web  Node 7 (CentOS/RHEL/Ubuntu/Debian/OpenSUSE)
+      |  Virtual machine
+      |  16 GB RAM
+      |  4 core
+      |  200 GB disk
+      \
+       \
+        |  Product Backend/Compute/DB Node 1 (CentOS/RHEL/Ubuntu/Debian/OpenSUSE)
+        |  Virtual machine
+        |  16 GB RAM
+        |  4 core
+        |  200 GB disk
+        |
+        |  Product Backend/Compute/DB Node 2 (CentOS/RHEL/Ubuntu/Debian/OpenSUSE)
+        |  Virtual machine
+        |  16 GB RAM
+        |  4 core
+        |  200 GB disk
+        |
+        |  Product Backend/Compute/DB Node 3 (CentOS/RHEL/Ubuntu/Debian/OpenSUSE)
+        |  Virtual machine
+        |  16 GB RAM
+        |  4 core
+        |  200 GB disk
+        |
+        |  Product Backend/Compute/DB Node 4 (CentOS/RHEL/Ubuntu/Debian/OpenSUSE) 
+        |  Virtual machine
+        |  16 GB RAM
+        |  4 core
+        |  200 GB disk
+        |
+        |  Product Backend/Compute/DB Node 5 (CentOS/RHEL/Ubuntu/Debian/OpenSUSE)
+        |  Virtual machine
+        |  16 GB RAM
+        |  4 core
+        |  200 GB disk
+        |
+        |  Product Backend/Compute/DB Node 6 (CentOS/RHEL/Ubuntu/Debian/OpenSUSE) 
+        |  Virtual machine
+        |  16 GB RAM
+        |  4 core
+        |  200 GB disk
+        |
+        |  Product Backend/Compute/DB Node 7 (CentOS/RHEL/Ubuntu/Debian/OpenSUSE)
+        |  Virtual machine
+        |  16 GB RAM
+        |  4 core
+        |  200 GB disk
+        |
+        |  Product Backend/Compute/DB Node 8 (CentOS/RHEL/Ubuntu/Debian/OpenSUSE) 
+        |  Virtual machine
+        |  16 GB RAM
+        |  4 core
+        |  200 GB disk
+        |
+        |  Product Backend/Compute/DB Node 9 (CentOS/RHEL/Ubuntu/Debian/OpenSUSE)
+        |  Virtual machine
+        |  16 GB RAM
+        |  4 core
+        |  200 GB disk
+        |
+        |  Product Backend/Compute/DB Node 10 (CentOS/RHEL/Ubuntu/Debian/OpenSUSE) 
+        |  Virtual machine
+        |  16 GB RAM
+        |  4 core
+        |  200 GB disk
+
+
+
+
+Additional rack
+-------------------------------
+UPS x2
+Routers
+Switches
+
+
+
+Workstations:
+
+
+Command station/NOC x4
+Ansible + Firefox (CentOS)
+Physical machine
+16 GB RAM
+8 core
+1 TB disk
+
+Research station x8
+Any OS and software
+Physical machine
+16 GB RAM
+8 core
+2 TB disk
+
+
+
+Additional:
+- AC unit/cooling systems
+- Office UPS per workstation
+- x20 Raspberry Pi per Office IoT - temperature monitoring, humidity, gas detection, misc sensors
+- x8 large (43"+) screen monitors, KVM between all Command Station workstations in NOC
+- x20+ levono laptops (any OS) 16GB+ RAM
+- printer x2
+- individual monitors, mechanical keyboards, and quality mice for each workstation
+- additional network hardware
+
+
+
+Datacenter 3 (code name long haul)
+positioned in remote and highly secure overseas location
+=====================
+
+1 rack of:
+-------------------
+GTM/DNS server
+8 GB RAM
+4 core
+80 GB disk
+
+Datacenter Workstation + fold out screen
+CentOS
+8 GB RAM
+8 core
+keyboard and mouse roll out
+
+UPS x2
+
+
+
+2 racks of:
+-------------------
+| Firewall/Gateway x2 redundant pair (FreeBSD) (kernel firewall and NTP)
+| Blade server (physical)
+| 8 GB RAM
+| 4 core
+| 80 GB disk
+ |  
+| Hypervisor x2 redundant pair (Your pick: VMWare, Xen, OpenStack, etc)
+| Blade server (physical)
+| 256 GB RAM
+| 18+ cores
+| Mounted to SAN
+
+
+2 racks of:
+-------------------
+| SAN A 
+| 80+ TB  storage array
+|
+| UPS A
+| 
+| UPS B
+|
+| UPS C
+| 
+| UPS D
+|____________________________
+
+
+1 rack of:
+-------------------  
+| Crypt (OpenBSD) x2 redundant pair - Used for key management and password database as well as security services.
+| Blade server (physical)
+| 16 GB RAM
+| 2+ cores
+| 4+ TB disks
+|
+| IDS/OSSEC (CentOS) x2 redundant pair - Intrusion detection, centralized logging, and security alerting.
+| Blade server (physical)
+| 16 GB RAM
+| 8+ cores
+| 4+ TB disks
+|
+| UPS x2
+
+
+
+1 rack of:
+-------------------  
+ML workstation A (Ubuntu)
+Physical machine
+256 GB Memory
+RTX 8000 (48 GB VRAM)
+Intel W-2195 CPU (18 Cores)
+4+ TB disk 
+
+Monitoring server (Ubuntu)
+Physical machine
+32 GB Memory
+8+ cores
+10 TB disk
+  |
+  |  Scanner/Security hosted on Monitoring server (Kali)
+  |  Virtual machine
+  |  16 GB RAM
+  |  4 core
+  |  800 GB disk
+  
+UPS x2
+  
+  
+Virtualized on the Hypervisors:
+
+  | 
+  |  Distributed Database Node (CentOS/RHEL/Ubuntu/Debian/OpenSUSE)
+  |  Virtual machine
+  |  24 GB RAM
+  |  4 core
+  |  2 TB disk
+  |
+  |  Load Balancer/Application firewall x2 redudant pair (CentOS/RHEL/F5)
+  |  Virtual machine
+  |  16 GB RAM
+  |  4 core
+  |  100 GB disk
+  \
+   \
+    \
+     \
+      |  Product Web Node 1 (CentOS/RHEL/Ubuntu/Debian/OpenSUSE) 
+      |  Virtual machine
+      |  16 GB RAM
+      |  4 core
+      |  200 GB disk
+      |
+      |  Product Web Node 2 (CentOS/RHEL/Ubuntu/Debian/OpenSUSE) 
+      |  Virtual machine
+      |  16 GB RAM
+      |  4 core
+      |  200 GB disk
+      |
+      |  Product Web Node 3 (CentOS/RHEL/Ubuntu/Debian/OpenSUSE)
+      |  Virtual machine
+      |  16 GB RAM
+      |  4 core
+      |  200 GB disk
+      |
+      |  Product Web Node 4 (CentOS/RHEL/Ubuntu/Debian/OpenSUSE)
+      |  Virtual machine
+      |  16 GB RAM
+      |  4 core
+      |  200 GB disk
+      |
+      |  Product Web  Node 5 (CentOS/RHEL/Ubuntu/Debian/OpenSUSE)
+      |  Virtual machine
+      |  16 GB RAM
+      |  4 core
+      |  200 GB disk
+      \
+       \
+        |  Product Backend/Compute/DB Node 1 (CentOS/RHEL/Ubuntu/Debian/OpenSUSE)
+        |  Virtual machine
+        |  16 GB RAM
+        |  4 core
+        |  200 GB disk
+        |
+        |  Product Backend/Compute/DB Node 2 (CentOS/RHEL/Ubuntu/Debian/OpenSUSE)
+        |  Virtual machine
+        |  16 GB RAM
+        |  4 core
+        |  200 GB disk
+        |
+        |  Product Backend/Compute/DB Node 3 (CentOS/RHEL/Ubuntu/Debian/OpenSUSE)
+        |  Virtual machine
+        |  16 GB RAM
+        |  4 core
+        |  200 GB disk
+        |
+        |  Product Backend/Compute/DB Node 4 (CentOS/RHEL/Ubuntu/Debian/OpenSUSE) 
+        |  Virtual machine
+        |  16 GB RAM
+        |  4 core
+        |  200 GB disk
+
+
+
+
+
+Additional rack
+-------------------------------
+UPS x2
+Routers
+Switches
+
+
+
+Workstations:
+
+
+Command station/NOC x4
+Ansible + Firefox (CentOS)
+Physical machine
+16 GB RAM
+8 core
+1 TB disk
+
+Research station x8
+Any OS and software
+Physical machine
+16 GB RAM
+8 core
+2 TB disk
+
+
+
+Additional:
+- AC unit/cooling systems
+- Office UPS per workstation
+- x20 Raspberry Pi per Office IoT - temperature monitoring, humidity, gas detection, misc sensors
+- x8 large (43"+) screen monitors, KVM between all Command Station workstations in NOC
+- x20+ levono laptops (any OS) 16GB+ RAM
+- printer x2
+- individual monitors, mechanical keyboards, and quality mice for each workstation
+- additional network hardware
+
+
+
+Datacenter 4, 5, and 6 all same build
+positioned around the world/country at optimized network locations
+4 code named region-default1
+5 code named region-default2
+6 code named region-default3
+======================
+
+1 rack of:
+-------------------
+GTM/DNS server
+8 GB RAM
+4 core
+80 GB disk
+
+Datacenter Workstation + fold out screen
+CentOS
+8 GB RAM
+8 core
+keyboard and mouse roll out
+
+UPS x2
+
+2 racks of:
+-------------------
+| Firewall/Gateway x2 redundant pair (FreeBSD) (kernel firewall and NTP)
+| Blade server (physical)
+| 8 GB RAM
+| 4 core
+| 80 GB disk
+ |  
+| Hypervisor x2 redundant pair (Your pick: VMWare, Xen, OpenStack, etc)
+| Blade server (physical)
+| 256 GB RAM
+| 18+ cores
+| Mounted to SAN
+
+
+2 racks of:
+-------------------
+| SAN A 
+| 80+ TB  storage array
+|
+| UPS A
+| 
+| UPS B
+|
+| UPS C
+| 
+| UPS D
+|____________________________
+
+
+1 rack of:
+-------------------  
+| Crypt (OpenBSD) x2 redundant pair - Used for key management and password database as well as security services.
+| Blade server (physical)
+| 16 GB RAM
+| 2+ cores
+| 4+ TB disks
+|
+| IDS/OSSEC (CentOS) x2 redundant pair - Intrusion detection, centralized logging, and security alerting.
+| Blade server (physical)
+| 16 GB RAM
+| 8+ cores
+| 4+ TB disks
+|
+| UPS x2
+
+
+
+1 rack of:
+-------------------  
+Monitoring server (Ubuntu)
+Physical machine
+32 GB Memory
+8+ cores
+10 TB disk
+  |
+  |  Scanner/Security hosted on Monitoring server (Kali)
+  |  Virtual machine
+  |  16 GB RAM
+  |  4 core
+  |  800 GB disk
+  
+UPS x2
+  
+  
+Virtualized on the Hypervisors:
+
+  | 
+  |  Distributed Database Node (CentOS/RHEL/Ubuntu/Debian/OpenSUSE)
+  |  Virtual machine
+  |  24 GB RAM
+  |  4 core
+  |  2 TB disk
+  |
+  |  Load Balancer/Application firewall x2 redudant pair (CentOS/RHEL/F5)
+  |  Virtual machine
+  |  16 GB RAM
+  |  4 core
+  |  100 GB disk
+  \
+   \
+    \
+     \
+      |  Product Web Node 1 (CentOS/RHEL/Ubuntu/Debian/OpenSUSE) 
+      |  Virtual machine
+      |  16 GB RAM
+      |  4 core
+      |  200 GB disk
+      |
+      |  Product Web Node 2 (CentOS/RHEL/Ubuntu/Debian/OpenSUSE) 
+      |  Virtual machine
+      |  16 GB RAM
+      |  4 core
+      |  200 GB disk
+      |
+      |  Product Web Node 3 (CentOS/RHEL/Ubuntu/Debian/OpenSUSE)
+      |  Virtual machine
+      |  16 GB RAM
+      |  4 core
+      |  200 GB disk
+      |
+      |  Product Web Node 4 (CentOS/RHEL/Ubuntu/Debian/OpenSUSE)
+      |  Virtual machine
+      |  16 GB RAM
+      |  4 core
+      |  200 GB disk
+      |
+      |  Product Web  Node 5 (CentOS/RHEL/Ubuntu/Debian/OpenSUSE)
+      |  Virtual machine
+      |  16 GB RAM
+      |  4 core
+      |  200 GB disk
+      \
+       \
+        |  Product Backend/Compute/DB Node 1 (CentOS/RHEL/Ubuntu/Debian/OpenSUSE)
+        |  Virtual machine
+        |  16 GB RAM
+        |  4 core
+        |  200 GB disk
+        |
+        |  Product Backend/Compute/DB Node 2 (CentOS/RHEL/Ubuntu/Debian/OpenSUSE)
+        |  Virtual machine
+        |  16 GB RAM
+        |  4 core
+        |  200 GB disk
+        |
+        |  Product Backend/Compute/DB Node 3 (CentOS/RHEL/Ubuntu/Debian/OpenSUSE)
+        |  Virtual machine
+        |  16 GB RAM
+        |  4 core
+        |  200 GB disk
+        |
+        |  Product Backend/Compute/DB Node 4 (CentOS/RHEL/Ubuntu/Debian/OpenSUSE) 
+        |  Virtual machine
+        |  16 GB RAM
+        |  4 core
+        |  200 GB disk
+
+
+
+
+
+Additional rack
+-------------------------------
+UPS x2
+Routers
+Switches
+
+
+
+Workstations:
+
+
+Command station/NOC x4
+Ansible + Firefox (CentOS)
+Physical machine
+16 GB RAM
+8 core
+1 TB disk
+
+
+
+Additional:
+- AC unit/cooling systems
+- Office UPS per workstation
+- x4 Raspberry Pi per Office IoT - temperature monitoring, humidity, gas detection, misc sensors
+- x4 large (43"+) screen monitors, KVM between all Command Station workstations in NOC
+- printer x2
+- individual monitors, mechanical keyboards, and quality mice for each workstation
+- additional network hardware
+
