@@ -69,25 +69,25 @@ Rack 1
    \
     \
      \
-      |  Product Node 1 (CentOS/RHEL) - ( assume Kubernetes -> Docker/Cloud -> Product Container )
+      |  Product Node 1 (CentOS/RHEL) - ( assume Kubernetes  -> Product Container )
       |  Virtual machine
       |  8 GB RAM
       |  4 core
       |  200 GB disk
       |
-      |  Product Node 2 (CentOS/RHEL) - ( assume Kubernetes -> Docker/Cloud -> Product Container )
+      |  Product Node 2 (CentOS/RHEL) - ( assume Kubernetes  -> Product Container )
       |  Virtual machine
       |  8 GB RAM
       |  4 core
       |  200 GB disk
       |
-      |  Product Node 3 (CentOS/RHEL) - ( assume Kubernetes -> Docker/Cloud -> Product Container )
+      |  Product Node 3 (CentOS/RHEL) - ( assume Kubernetes  -> Product Container )
       |  Virtual machine
       |  8 GB RAM
       |  4 core
       |  200 GB disk
        \
-        |  External cloud service (CentOS/RHEL) - ( External Docker/Cloud -> Product Container )
+        |  External cloud service (CentOS/RHEL) - ( External Cloud -> Product Container )
         |  External VM
         |  8 GB RAM
         |  2 core
@@ -202,26 +202,26 @@ Rack 3
    \
     \
      \
-      |  Product Node 5 CentOS/RHEL) - ( assume Kubernetes -> Docker/Cloud -> Product Container )
+      |  Product Node 5 CentOS/RHEL) - ( assume Kubernetes  -> Product Container )
       |  Virtual machine
       |  8 GB RAM
       |  4 core
       |  200 GB disk
       |
-      |  Product Node 6 CentOS/RHEL) - ( assume Kubernetes -> Docker/Cloud -> Product Container )
+      |  Product Node 6 CentOS/RHEL) - ( assume Kubernetes  -> Product Container )
       |  Virtual machine
       |  8 GB RAM
       |  4 core
       |  200 GB disk
       |
-      |  Product Node 7 (CentOS/RHEL) - ( assume Kubernetes -> Docker/Cloud -> Product Container )
+      |  Product Node 7 (CentOS/RHEL) - ( assume Kubernetes  -> Product Container )
       |  Virtual machine
       |  8 GB RAM
       |  4 core
       |  200 GB disk
       |
        \
-        |  External cloud service (CentOS/RHEL) - ( External Docker/Cloud -> Product Container )
+        |  External cloud service (CentOS/RHEL) - ( External Cloud -> Product Container )
         |  External VM
         |  8 GB RAM
         |  2 core
