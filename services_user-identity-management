@@ -1,0 +1,45 @@
+The purpose of this document is to describe a modern identity management ecosystem for people
+interacting with service mesh (cloud) services.
+
+These services are described as kubernetes type services generically. The identity management is 
+used to provide temporary access to APIs and web services.
+
+Identity Manager Service Mesh aka IMS or IMSM
+=============================
+
+Flow
+ |-> User login screen at (example https://access-mycompanynamestuff/identity
+     |-> Users may be logged in with dual factor auth, authenticator app etc
+         |-> Once users are logged in, they have a menu of their settings for their phone and password etc
+             and another menu item that is populated based on the users role and access restrictions.
+             |-> The populated menu is a list of the APIs and services they may request a token for.
+                 The user selects "transaction search" for example as a service they want access to.
+                 |-> The Identity Manager Service then generates an ephemeral EC key and sends the 
+                     public parameter to the selected "transaction search" service.
+                     Optionally, the IMS actually triggers a spin up of resources for this service,
+                     causing kubernetes to build out an appropriately sized set of ephemeral services for this person.
+                     |-> The "transaction search" service generates an ephemeral EC key and sends the
+                         public parameter to the Identity Manager Service. Now both the "transaction search"
+                         and the IMS can derive a shared secret tied to this user session. 
+                         |-> The IMS reports activity to any security hook services, the "transaction search" might do the same.
+                             |-> Then the IMS generates a JWT for the user and provides it on the screen.
+                                 |-> Until that JWT expires, the user can now authenticate with the specific API
+                                     or service, in this example the "transaction search" service, by submitting
+                                     the JWT into the API call or service GUI.
+                                     
+
+Desirable qualities of the design:
+- Individual services and APIs never need to store or know about the users username and password, except for the IMS.
+- JWTs and all communication is over HTTPS (TLS) and can also contain field level encryption if desired.
+- Encryption is done with AES256 with strong machine generated secrets.
+- JWTs can and should have short life spans, as short as the users will tolerate. An example might be 9 hours.
+- Compromised credentials do not provide any access by themselves.
+- Compromised JWTs only grant temporary access to specific services.
+- Security services can granularly control if access is granted by hooking into the IMS.
+- Ephemeral elliptic curve cryptography can be utilized for not only key exchange for AES256 
+  but also HMAC secret derivation etc.
+- Sessions can be easily sandboxed and isolated.
+- Resources can be dynamically provisioned based on the number of active tokens.
+
+
+
