@@ -14,6 +14,10 @@ Flow
              and another menu item that is populated based on the users role and access restrictions.
              |-> The populated menu is a list of the APIs and services they may request a token for.
                  The user selects "transaction search" for example as a service they want access to.
+                 Optionally they may need to fill out form fields that contain information like
+                 authorizing manager, JIRA ticket, API request data. And then the IMS can make
+                 optional calls out to provide SMS alerts, JIRA tickets, etc for support or security staff
+                 or even require another person authorizes the access for some more extreme security checks.
                  |-> The Identity Manager Service then generates an ephemeral EC key and sends the 
                      public parameter to the selected "transaction search" service.
                      Optionally, the IMS actually triggers a spin up of resources for this service,
@@ -32,9 +36,14 @@ Desirable qualities of the design:
 - Individual services and APIs never need to store or know about the users username and password, except for the IMS.
 - JWTs and all communication is over HTTPS (TLS) and can also contain field level encryption if desired.
 - Encryption is done with AES256 with strong machine generated secrets.
-- JWTs can and should have short life spans, as short as the users will tolerate. An example might be 9 hours.
+- JWTs can and should have short life spans, as short as the users will tolerate.
+  A GUI service that authenticates with the token then uses application session control may only need 
+  a JWT to be valid for a few minutes. An API that a user is going to use over and over to do work may require something
+  more like 9 hours for the JWT lifespan.
 - Compromised credentials do not provide any access by themselves.
-- Compromised JWTs only grant temporary access to specific services.
+- Compromised JWTs only grant temporary access to specific services. Optionally if the user entered into the IMS request
+  for the JWT the query or API call, the IMS can use that in the json field of the JWT, a compormised JWT like this may
+  only provide a specific function or queries within that API or serivce as dictated by the token.
 - Security services can granularly control if access is granted by hooking into the IMS.
 - Ephemeral elliptic curve cryptography can be utilized for not only key exchange for AES256 
   but also HMAC secret derivation etc.
