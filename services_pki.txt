@@ -24,7 +24,7 @@ intermediate for the situation.
 
 RSA             RSA              RSA               RSA               RSA
 Internal        Internal         Internal          Internal          Internal
-Networks        Office           Systems           Web               Security Team
+Networks        Office           Systems           Dev Team          Security Team
 Intermediate    Intermediate     Intermediate      Intermediate      Intermediate
 
 ============    ============     ============      ============      ==============
@@ -39,7 +39,7 @@ Intermediate    Intermediate     Intermediate      Intermediate      Intermediat
 
 ECC             ECC              ECC               ECC              ECC
 Internal        Internal         Internal          Internal         Internal
-Networks        Office           Systems           Web              Security Team
+Networks        Office           Systems           Dev Team         Security Team
 Intermediate    Intermediate     Intermediate      Intermediate     Intermediate
 
 ============    ============     ============      ============     ==============
