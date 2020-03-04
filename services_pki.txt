@@ -1,0 +1,49 @@
+The purpose of this document is to describe a modern internal PKI structure for
+interacting with service mesh (cloud) services.
+
+
+
+Internal Public Key Infrastructure aka Internal PKI
+==================================
+
+
+
+[ self serve portal service ] is a web GUI service with sessions authenticated by the ISM (see https://github.com/jpegleg/idealism-systems/blob/master/services_user-identity-management.txt)
+where approved users can submit a CSR and receive an internal use only certificate.
+
+[ ACME server ] is a service that will issue certificates automatically to your certbot configured services.
+
+
+Both the ACME server/s and the self serve portal/s will sign certificate requests with the appropriate 
+intermediate for the situation.
+
+
+
+
+                      RSA Internal Root
+
+RSA             RSA              RSA               RSA               RSA
+Internal        Internal         Internal          Internal          Internal
+Networks        Office           Systems           Web               Security Team
+Intermediate    Intermediate     Intermediate      Intermediate      Intermediate
+
+============    ============     ============      ============      ==============
+
+
+                self serve portal service           ACME server
+
+
+
+
+                     ECC Internal Root
+
+ECC             ECC              ECC               ECC              ECC
+Internal        Internal         Internal          Internal         Internal
+Networks        Office           Systems           Web              Security Team
+Intermediate    Intermediate     Intermediate      Intermediate     Intermediate
+
+============    ============     ============      ============     ==============
+
+
+                 self serve portal service           ACME server
+
