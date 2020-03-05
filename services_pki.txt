@@ -1,5 +1,5 @@
 The purpose of this document is to describe a modern internal PKI structure for
-interacting with service mesh (cloud) services.
+interacting with private (internal) service mesh (cloud) services.
 
 
 
