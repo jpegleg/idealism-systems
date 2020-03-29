@@ -1,0 +1,67 @@
+So, turns out FreeBSD is better at network storage than linux is. Okay, so lets use freenas for storage.
+Turns out Ubuntu is good at kubernetes, more than most OSs and distros, because it is developed on there and the kernel
+version in Ubuntu is best aligned to the software functionality. Because of these concepts/assumptions, we can see
+a high performance infrastructure based on the two of them.
+
+Each DC has FreeNAS replicating to the other DCs, and replicating to a backup FreeNAS within the DC.
+
+Each DC has 7 physical Ubuntu servers running microk8s kubernetes, mounted to the shared FreeNAS SAN mount for persistent storage.
+
+Each DC has 2 physical FreeBSD servers as physical firewalls and switches.
+
+Each DC has 3 physical FreeBSD servers for IDS and security services.
+
+Each DC has 1 physical Ubuntu workstation for ansible, monitoring, terraform, etc.
+
+Make the FreeNAS's huge if you can, put SSDs on the primary if you can.
+
+Make the Ubuntu servers huge if you can, 256+ GB RAM, 24+ cores of CPU, 2+ TB local disk.
+
+Make the physical FreeBSD servers have lots of physical network ports, 24+ GB RAM, 8+ cores of CPU, 200+ GB local storage.
+
+Make the Ubuntu workstation a true monster, 64+ GB RAM, 32+ cores, 4+ TB of local storage.
+
+So this is all the physical devices.
+
+Then all of the product is run in containers with microk8s kubernetes on the Ubuntu servers, 
+automatic fail over between all DCs and Ubuntu servers.
+
+
+south flow
+====================================================================
+
+(internet/client)  (alt DC)                       ________________
+        |         /                               |  ubuntu      |
+        V        v                                |  workstation |
+  [ FreeBSD IDSs ]                                |______________|
+       ||                                              ^                                                 
+  [ FreeBSD FWs ]    ----------------------------------|                                                                                         \
+      ||||                                                                                                 
+  [ ubuntu servers -> load balanced containers across all devices locally and remote DC / cloud ]          
+       ||||||                                                                                              
+  [ FreeBSD FreeNAS Primary ]   
+     ||||||                                                                                                
+ [ FreeBSD FreeNAS Backup ]     
+ 
+north flow
+====================================================================
+
+(net/client)    (alt DC)                          ________________
+        ^       ^                                 |  ubuntu      |
+        |      /                                  |  workstation |
+  [ FreeBSD IDSs ]                                |______________|
+       ||                                        /                                                     
+  [ FreeBSD FWs ]    <---------------------------                                                       
+      ||||                                                                                              
+  [ ubuntu servers <- load balanced containers across all devices locally and remote DC / cloud ]        
+       ||||||                                                                                           
+  [ FreeBSD FreeNAS Primary ] 
+     ||||||                                                                                             
+ [ FreeBSD FreeNAS Backup ]   
+
+This is trying to say, the FreeBSD FW has to be updated in person, no remote access allowed. 
+The IDS and FreeNAS sends data to the ubuntu workstation for monitoring/analysis, through the firewall/switch.
+All of the Ubuntu devices traffic has to go through the FreeBSD firewall, including the workstation.
+All of the FreeNAS traffic has to go through the firewall/switch devices.
+The IDS devices are the only ones allowed to connect to the internet/outside without the firewalls.
+
