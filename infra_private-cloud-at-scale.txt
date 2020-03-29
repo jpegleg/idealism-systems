@@ -108,7 +108,7 @@ Virtualized on the Hypervisors:
   |  4 core
   |  2 TB disk
   |
-  |  Load Balancer/Application firewall x2 redudant pair (CentOS/RHEL/F5)
+  |  Load Balancer/Application firewall x2 redundant pair (CentOS/RHEL/F5)
   |  Virtual machine
   |  16 GB RAM
   |  4 core
