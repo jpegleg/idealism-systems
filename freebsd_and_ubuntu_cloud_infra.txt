@@ -77,16 +77,16 @@ On each ubuntu server's microk8s, we might run a min set of pods as such:
   |                
   V                
 ____________________________________________________ 
-(traefik) x7                                        |   The vault and consul instances may also have other
-  |                                                 |   connections, including traefik to vault for example.
+(traefik) x7                                        |   Although not clearly depicted here, the traefik service
+  |                                                 |   connections all of the pods to eachother as well as external.
   V                                                 |   And you can imagine, Helm will be on the workstation
-(nginx) x7                                          |   and able to deploy and change the pods.
+(nginx) x7                                          |   and able to deploy and change the pods etc.
   |                                                 |
   V                                                 >   x7 ubuntu servers running kubernetes with this same number of pods
 (custom-frontend-x) x7--> (custom-backend-x) x7     |
   |                      /                          |   the pods is overly simplified to get the point across
   V                     V                           |   you might have several more layers of microservices etc
-(redis) x3      (vault) x3 -------> (consul x3)     |   and the x7 number is just an arbitrary baseline,
+(redis) x3      (vault) x3 -------> (consul x3)     |   and the x7 number of pods is just an arbitrary baseline,
   |                |          (consul non-vote x3)  |   you may find you need more than x7 etc or that your
   __________________________________________________|   autoscaling can sit at a lower min count etc.
   |                |               |
