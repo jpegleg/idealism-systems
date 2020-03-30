@@ -11,7 +11,7 @@ Each DC has 2 physical FreeBSD servers as physical firewalls and switches.
 
 Each DC has 3 physical FreeBSD servers for IDS and security services.
 
-Each DC has 1 physical Ubuntu workstation for ansible, monitoring, terraform, etc.
+Each DC has 1 physical Ubuntu workstation for ansible, monitoring, terraform, helm, etc.
 
 Make the FreeNAS's huge if you can, put SSDs on the primary if you can.
 
@@ -37,7 +37,7 @@ south flow
        ||                                              ^                                                 
   [ FreeBSD FWs ]    ----------------------------------|                                                                                         \
       ||||                                                                                                 
-  [ ubuntu servers -> load balanced containers across all devices locally and remote DC / cloud ]          
+  [ ubuntu servers -> load balanced containers across all devices locally and remote DC / cloud, see below ]          
        ||||||                                                                                              
   [ FreeBSD FreeNAS Primary ]   
      ||||||                                                                                                
@@ -53,7 +53,7 @@ north flow
        ||                                        /                                                     
   [ FreeBSD FWs ]    <---------------------------                                                       
       ||||                                                                                              
-  [ ubuntu servers <- load balanced containers across all devices locally and remote DC / cloud ]        
+  [ ubuntu servers <- load balanced containers across all devices locally and remote DC / cloud, see below ]        
        ||||||                                                                                           
   [ FreeBSD FreeNAS Primary ] 
      ||||||                                                                                             
@@ -65,3 +65,33 @@ All of the Ubuntu devices traffic has to go through the FreeBSD firewall, includ
 All of the FreeNAS traffic has to go through the firewall/switch devices.
 The IDS devices are the only ones allowed to connect to the internet/outside without the firewalls.
 
+Now about the kubernetes instances themselves...
+
+So we want odd numbers of pods, for the voting system.
+
+We will build out the services with traefik, nginx, redis, vault, consul, custom-frontend-x, and custom-backend-x.
+
+On each ubuntu server's microk8s, we might run a min set of pods as such:
+
+( FreeBSD network devices )
+  |                
+  V                
+____________________________________________________ 
+(traefik) x7                                        |   The vault and consul instances may also have other
+  |                                                 |   connections, including traefik to vault for example.
+  V                                                 |   And you can imagine, Helm will be on the workstation
+(nginx) x7                                          |   and able to deploy and change the pods.
+  |                                                 |
+  V                                                 >   x7 ubuntu servers running kubernetes with this same number of pods
+(custom-frontend-x) x7--> (custom-backend-x) x7     |
+  |                      /                          |   the pods is overly simplified to get the point across
+  V                     V                           |   you might have several more layers of microservices etc
+(redis) x3      (vault) x3 -------> (consul x3)     |   and the x7 number is just an arbitrary baseline,
+  |                |          (consul non-vote x3)  |   you may find you need more than x7 etc or that your
+  __________________________________________________|   autoscaling can sit at a lower min count etc.
+  |                |               |
+  V                V               V
+(       FreeBSD network devices       )
+  |                |               |
+  V                V               V         
+(         FreeNAS SAN Volumes         )
