@@ -5,7 +5,7 @@ a high performance infrastructure based on the two of them.
 
 Each DC has FreeNAS replicating to the other DCs, and replicating to a backup FreeNAS within the DC.
 
-Each DC has 7 physical Ubuntu servers running microk8s kubernetes, mounted to the shared FreeNAS SAN mount for persistent storage.
+Each DC has 7 physical Ubuntu servers running microk8s kubernetes, mounted to the shared FreeNAS mount for persistent storage.
 
 Each DC has 2 physical FreeBSD servers as physical firewalls and switches.
 
@@ -94,4 +94,4 @@ ____________________________________________________
 (       FreeBSD network devices       )
   |                |               |
   V                V               V         
-(         FreeNAS SAN Volumes         )
+(           FreeNAS Volumes         )
