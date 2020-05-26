@@ -18,11 +18,11 @@ This is for a sysadmin staff of one to four.
   |
   |  Scanner/Security (Kali)
   |  Virtual machine
-  |  8 GB RAM
+  |  16 GB RAM
   |  4 core
   |  200 GB disk
   |
-  |  Database that syncs to Database on the other workstation as cluster (Your pick on OS: CentOS, RHEL, OpenSUSE, or Debian)
+  |  Database + persistent storage that syncs to Database on the other workstation as cluster (Your pick on OS: CentOS, RHEL, OpenSUSE, or Debian)
   |  Virtual machine
   |  16 GB RAM
   |  4 core
@@ -31,22 +31,22 @@ This is for a sysadmin staff of one to four.
 External Cloud Service:
 
      |  External cloud service (CentOS/RHEL) - ( Product Firewall/Load Balancer )
-     |  External VM
-     |  8 GB RAM
-     |  2 core
-     |  16 GB disk
+     |  External VM/app
+     |  estimated 8 GB RAM
+     |  estimated 2 core
+     |  estimated 16 GB disk
       |
      |  External cloud service (CentOS/RHEL) - ( Product Web Container )
-     |  External VM
-     |  2 GB RAM
-     |  1 core
-     |  20 GB disk
+     |  External VM/app
+     |  estimated 2 GB RAM
+     |  estimated 1 core
+     |  estimated 20 GB disk
       |
      |  External cloud service (CentOS/RHEL) - ( Product Backend/DB Container )
-     |  External VM
-     |  8 GB RAM
-     |  2 core
-     |  30 GB disk
+     |  External VM/app
+     |  estimated 8 GB RAM
+     |  estimated 2 core
+     |  estimated 30 GB disk
      
      
 Additional
