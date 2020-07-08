@@ -24,7 +24,7 @@ Rack 1
 | 2+ cores
 | 4+ TB disks
  |  
-| Hypervisor A x2 redundant pair (Your pick: VMWare, Xen, OpenStack, etc)
+| Hypervisor A x2 redundant pair (Your pick: VMWare, Xen, KVM, etc)
 | Blade server (physical)
 | 128 GB RAM
 | 4+ cores
@@ -88,7 +88,7 @@ Rack 1
       |  200 GB disk
        \
         |  External cloud service (CentOS/RHEL) - ( External Cloud -> Product Container )
-        |  External VM
+        |  External resources
         |  8 GB RAM
         |  2 core
         |  20 GB disk
@@ -157,7 +157,7 @@ Rack 3
 | 2+ cores
 | 4+ TB disks
  | 
-| Hypervisor B x2 redundant pair (Your pick: VMWare, Xen, OpenStack, etc)
+| Hypervisor B x2 redundant pair (Your pick: VMWare, Xen, KVM, etc)
 | Blade server (physical)
 | 128 GB RAM
 | 4+ cores
@@ -222,7 +222,7 @@ Rack 3
       |
        \
         |  External cloud service (CentOS/RHEL) - ( External Cloud -> Product Container )
-        |  External VM
+        |  External resources X
         |  8 GB RAM
         |  2 core
         |  20 GB disk
