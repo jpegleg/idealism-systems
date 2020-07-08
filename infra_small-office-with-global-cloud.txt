@@ -31,19 +31,19 @@ This is for a sysadmin staff of one to four.
 External Cloud Service:
 
      |  External cloud service (CentOS/RHEL) - ( Product Firewall/Load Balancer )
-     |  External VM/app
+     |  External resources/app
      |  estimated 8 GB RAM
      |  estimated 2 core
      |  estimated 16 GB disk
       |
      |  External cloud service (CentOS/RHEL) - ( Product Web Container )
-     |  External VM/app
+     |  External resources/app
      |  estimated 2 GB RAM
      |  estimated 1 core
      |  estimated 20 GB disk
       |
      |  External cloud service (CentOS/RHEL) - ( Product Backend/DB Container )
-     |  External VM/app
+     |  External resources/app
      |  estimated 8 GB RAM
      |  estimated 2 core
      |  estimated 30 GB disk
