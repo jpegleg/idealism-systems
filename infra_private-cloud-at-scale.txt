@@ -35,7 +35,7 @@ UPS x2
 | 4 core
 | 80 GB disk
  |  
-| Hypervisor x2 redundant pair (Your pick: VMWare, Xen, OpenStack, etc)
+| Hypervisor x2 redundant pair (Your pick: VMWare, Xen, KVM, etc)
 | Blade server (physical)
 | 256 GB RAM
 | 18+ cores
@@ -258,7 +258,7 @@ UPS x2
 | 4 core
 | 80 GB disk
  |  
-| Hypervisor x2 redundant pair (Your pick: VMWare, Xen, OpenStack, etc)
+| Hypervisor x2 redundant pair (Your pick: VMWare, Xen, KVM, etc)
 | Blade server (physical)
 | 256 GB RAM
 | 18+ cores
@@ -491,7 +491,7 @@ UPS x2
 | 4 core
 | 80 GB disk
  |  
-| Hypervisor x2 redundant pair (Your pick: VMWare, Xen, OpenStack, etc)
+| Hypervisor x2 redundant pair (Your pick: VMWare, Xen, KVM, etc)
 | Blade server (physical)
 | 256 GB RAM
 | 18+ cores
@@ -701,7 +701,7 @@ UPS x2
 | 4 core
 | 80 GB disk
  |  
-| Hypervisor x2 redundant pair (Your pick: VMWare, Xen, OpenStack, etc)
+| Hypervisor x2 redundant pair (Your pick: VMWare, Xen, KVM, etc)
 | Blade server (physical)
 | 256 GB RAM
 | 18+ cores
